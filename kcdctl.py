@@ -3,15 +3,30 @@ import subprocess
 import platform
 import sys
 
-def run_command(command):
-    """Run a system command and return the output."""
+def run_command(command, verbose=False):
+    """Run a system command and optionally print the output in real-time for verbose mode."""
     try:
-        output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
-        print(output.decode())
-        return True
+        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if verbose:
+            while True:
+                output = process.stdout.readline()
+                if not output and process.poll() is not None:
+                    break
+                if output:
+                    print(output.decode().strip())
+        process.wait()  # Wait for the process to finish
+        return process.returncode == 0
     except subprocess.CalledProcessError as e:
         print(f"Error executing command: {e.output.decode()}")
         return False
+
+def run_minikube(verbose=False):
+    """Start Minikube with optional verbose output."""
+    command = "minikube start"
+    if verbose:
+        command += " --alsologtostderr"
+    if not run_command(command, verbose):
+        print("There was an issue starting Minikube. Please check the output for details.")
 
 def is_docker_installed():
     """Check if Docker is installed."""
@@ -47,9 +62,22 @@ def install_minikube():
         print("Unsupported operating system for automatic Minikube installation.")
         sys.exit(1)
 
-def run_minikube():
-    """Start Minikube."""
-    run_command("minikube start")
+def run_command(command, verbose=False):
+    """Run a system command and optionally print the output in real-time for verbose mode."""
+    try:
+        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if verbose:
+            while True:
+                output = process.stdout.readline()
+                if not output and process.poll() is not None:
+                    break
+                if output:
+                    print(output.decode().strip())
+        process.wait()  # Wait for the process to finish
+        return process.returncode == 0
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing command: {e.output.decode()}")
+        return False
 
 def check_system():
     """Check the system for Docker and Minikube installations."""
@@ -59,8 +87,8 @@ def check_system():
     print(f"Docker installed: {'Yes' if docker_installed else 'No'}")
     print(f"Minikube installed: {'Yes' if minikube_installed else 'No'}")
 
-def create_environment():
-    """Create the Kubernetes environment by installing Docker and Minikube if necessary and starting Minikube."""
+def create_environment(verbose=False):
+    """Create the Kubernetes environment by installing Docker and Minikube if necessary and starting Minikube with optional verbose output."""
     if not is_docker_installed():
         print("Docker is not installed. Installing Docker...")
         install_docker()
@@ -74,7 +102,7 @@ def create_environment():
         print("Minikube is already installed.")
 
     print("Starting Minikube...")
-    run_minikube()
+    run_minikube(verbose)
 
 def main():
     parser = argparse.ArgumentParser(description='Kubernetes Bootcamp Lab CLI')
