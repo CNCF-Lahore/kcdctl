@@ -9,3 +9,5 @@ Create Environment: To create the environment (install Docker and Minikube if th
 ```
 python kcdctl.py create
 ```
+
+This CLI is still in the development phase, please feel free to contribute
