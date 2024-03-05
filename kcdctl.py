@@ -1,6 +1,8 @@
 from DependencyInsScripts.LinuxSetup import LinuxInstaller
+from DependencyInsScripts.MacOSInstaller import MacOSInstaller  # Add this import
 from determineOS import getOS
-from DependencyInsScripts.WindowsSetup import * 
+from DependencyInsScripts.WindowsSetup import *
+
 def detOSandInsDep():
     osName, osDetails, osVersion, osFlavor = getOS()
     print(f"The operating system is: {osName}")
@@ -14,13 +16,6 @@ def detOSandInsDep():
     elif 'linux' in osDetails.lower():
         print("Running Linux Installation scripts")
         LinuxInstaller.main()
-    
-
-
-
-
-def main():
-    detOSandInsDep()   
-if __name__ == "__main__":
-    main()    
-
+    elif 'darwin' in osDetails.lower():  # Check for macOS
+        print("Running macOS Installation scripts")
+        MacOSInstaller.main()
