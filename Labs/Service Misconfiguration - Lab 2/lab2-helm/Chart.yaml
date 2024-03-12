@@ -1,0 +1,4 @@
+apiVersion: v2
+name: lab2-chart
+description: A Helm chart for deploying an Nginx service and a BusyBox pod making requests to it
+version: 0.1.0

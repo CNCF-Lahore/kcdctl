@@ -1,0 +1,18 @@
+{
+    "lab1": {
+        "cluster_name": "lab1-cluster",
+        "config_path": "./Labs/DNS Lab - Lab 1/lab1-kindconf.yaml",
+        "uses_helm": false
+    },
+    "lab2": {
+        "cluster_name": "lab2-cluster",
+        "config_path": "./Labs/Service Misconfiguration - Lab 2/lab2-kindconf.yaml",
+        "uses_helm": true,
+        "helm_settings": {
+            "chart_name": "./Labs/Service Misconfiguration - Lab 2/lab2-helm",
+            "release_name": "lab2",
+            "namespace": "default",
+            "values_file": "./Labs/Service Misconfiguration - Lab 2/lab2-helm/values.yaml"
+        }
+    }
+}

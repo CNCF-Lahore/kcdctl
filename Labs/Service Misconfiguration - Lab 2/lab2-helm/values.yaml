@@ -1,0 +1,3 @@
+nginxNamespace: nginx-ns
+busyboxNamespace: busybox
+nginxServiceName: nginx
