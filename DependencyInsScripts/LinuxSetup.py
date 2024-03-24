@@ -54,8 +54,16 @@ class LinuxInstaller:
             subprocess.run(["curl", "-L", helm_url, "-o", tar_path], check=True)
             with tarfile.open(tar_path, "r:gz") as tar:
                 tar.extractall(path=tmpdirname)
-            shutil.move(os.path.join(tmpdirname, "linux-amd64/helm"), "/usr/local/bin/helm")
-        subprocess.run(["chmod", "+x", "/usr/local/bin/helm"], check=True)
+            #shutil.move(os.path.join(tmpdirname, "linux-amd64/helm"), "/usr/local/bin/helm")
+            
+            cmd_sudo = "sudo mv -v {} /usr/local/bin/helm".format(os.path.join(tmpdirname) + "/linux-amd64/helm")
+
+            subprocess.run(cmd_sudo, shell=True, check=True)
+
+        #subprocess.run(["chmod", "+x", "/usr/local/bin/helm"], check=True)
+
+        subprocess.run("sudo chmod +x /usr/local/bin/helm", shell=True, check=True)
+        
         print("Helm installation completed.")
 
     @staticmethod
@@ -68,12 +76,23 @@ class LinuxInstaller:
         print("Kind installation completed.")
 
     @staticmethod
+    def install_kubectl():
+        print("Installing Kubectl...")
+        VERSION_KCTL="v1.29.2"
+        kubectl_url = "https://dl.k8s.io/release/{}/bin/linux/amd64/kubectl".format(VERSION_KCTL)
+        subprocess.run(f"curl -Lo ./kubectl {kubectl_url}", shell=True, check=True)
+        subprocess.run("chmod +x ./kubectl", shell=True, check=True)
+        subprocess.run("sudo mv ./kubectl /usr/local/bin/kubectl", shell=True, check=True)
+        print("Kubectl installation completed.")
+
+    @staticmethod
     def main():
         required_utilities = ["curl"]
         LinuxInstaller.install_missing_utilities(required_utilities)
         LinuxInstaller.install_docker()
         LinuxInstaller.install_helm()
         LinuxInstaller.install_kind()
+        LinuxInstaller.install_kubectl()
 
 if __name__ == "__main__":
     LinuxInstaller.main()

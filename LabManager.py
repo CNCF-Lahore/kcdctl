@@ -1,3 +1,6 @@
+#import dependencies
+import subprocess
+
 class LabManager:
     def __init__(self, kind_helm_manager, config_manager):
         self.kind_helm_manager = kind_helm_manager
