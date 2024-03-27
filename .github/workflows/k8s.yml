@@ -1,4 +1,4 @@
-name: Deploy Kubernetes Cluster
+name: Deploy Kubernetes Cluster lab01
 
 on: workflow_dispatch
 
@@ -18,7 +18,7 @@ jobs:
         run: python kcdctl.py check
       
       - name: Create Kubernetes cluster
-        run: python kcdctl.py create
+        run: python kcdctl.py create deploy lab1
       
       - name: Install kubectl
         run: |
@@ -30,29 +30,4 @@ jobs:
           kubectl get namespace
           kubectl get pods
 
-  deploy-on-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.x'
-          
-      - name: Check system requirements
-        run: python kcdctl.py check
-      
-      - name: Create Kubernetes cluster
-        run: python kcdctl.py create
-      
-      - name: Install kubectl (Windows)
-        run: |
-          choco install kubernetes-cli
-      
-      - name: Get cluster info
-        run: |
-          kubectl get nodes
-          kubectl get namespace
-          kubectl get pods
+
