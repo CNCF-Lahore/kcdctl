@@ -56,4 +56,5 @@ def main():
     WindowsSoftwareInstaller.install_docker_and_dependencies()
 
 if __name__ == "__main__":
-    main()
+    
+    WindowsSoftwareInstaller.main()

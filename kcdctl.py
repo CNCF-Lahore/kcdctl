@@ -16,10 +16,6 @@ def detOSandInsDep():
         print(f"The operating system flavor is: {osFlavor}")
     if 'windows' in osDetails.lower():
         print("Running Windows Installation scripts")
-        if hasattr(WindowsSoftwareInstaller, 'main'):
-            WindowsSoftwareInstaller.main() 
-        else:
-            print("Error: 'main' method not found in 'WindowsSoftwareInstaller'.")
         WindowsSoftwareInstaller.main()
     elif 'linux' in osDetails.lower():
         print("Running Linux Installation scripts")
