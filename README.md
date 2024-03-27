@@ -3,11 +3,15 @@
 Check System: To check if your system meets the requirements (Docker and Minikube installed), run the script with the check command:
 ```
 
-python kcdctl.py check
-```
-Create Environment: To create the environment (install Docker and Minikube if they're not installed and start Minikube), use the 
-```
-python kcdctl.py create
+python kcdctl.py
+
+Available Commands:
+  check               - To check the operating system and install softwares accordingly
+  deploy [lab_id]     - Deploy a lab environment based on its ID. Previous environments will be cleaned up. Example: deploy lab2
+  delete [lab_id]    - Clean up the deployed lab environment based on its ID.
+  quit               - Exit the application.
+  help               - Display this help message.
+
 ```
 
-This CLI is still in the development phase, please feel free to contribute
+
