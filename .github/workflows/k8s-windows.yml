@@ -20,17 +20,15 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Chocolatey
-        run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force;
-          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
-          iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
       - name: Install kubectl using Chocolatey
         run: choco install kubernetes-cli -y
+        
 
       - name: Deploy Kubernetes cluster
-        run: python kcdctl.py deploy ${{ github.event.inputs.lab_number }}
+        run: |
+          python kcdctl.py check
+          python kcdctl.py deploy ${{ github.event.inputs.lab_number }}
 
       - name: Get cluster info
         run: |
