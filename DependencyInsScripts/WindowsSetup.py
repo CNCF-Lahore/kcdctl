@@ -35,28 +35,23 @@ class WindowsSoftwareInstaller:
 
     @staticmethod
     def install_docker_and_dependencies():
-        # Ensure Docker Desktop is installed first
+    # Ensure Docker Desktop is installed first
         WindowsSoftwareInstaller.install_with_choco("docker-desktop")
         # Optionally, check if Docker is running. This step is more complex and may require manual verification or a wait time.
         print("Please ensure Docker Desktop is running before proceeding with the installation of Helm and Kind.")
-        print(f"Starting Docker")
-        subprocess.run(["ls", "C:\\Program Files"], check=True)
-        print("Please ensure Docker Desktop is running before proceeding with the installation of Helm and Kind.")
-        subprocess.run(["ls", "C:\\Program Files\\Docker"], check=True)
-        print("Please ensure Docker Desktop is running before proceeding with the installation of Helm and Kind.")
-        subprocess.run(["ls", "C:\\Program Files\\Docker\\Docker"], check=True)
-        print("Please ensure Docker Desktop is running before proceeding with the installation of Helm and Kind.")
-        subprocess.run(["Start-Process", "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe"], check=True)
-        subprocess.run(["Start-Service", "docker"], check=True)
-        subprocess.run(["Get-Service", "docker"], check=True)
-        subprocess.run(["docker", "version"], check=True)
+        print("Starting Docker")
+        subprocess.run(["powershell", "-Command", "Start-Process", "-FilePath", "'C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe'"], check=True)
+        # The following lines might not be necessary for Docker Desktop, but included for completeness
+        # subprocess.run(["powershell", "-Command", "Start-Service", "docker"], check=True)
+        # subprocess.run(["powershell", "-Command", "Get-Service", "docker"], check=True)
+        subprocess.run(["powershell", "-Command", "docker", "version"], check=True)
 
         time.sleep(60)  # Wait a bit for the user to start Docker Desktop; adjust the wait time as needed.
 
         # Install Helm and Kind after Docker Desktop
-
         WindowsSoftwareInstaller.install_with_choco("kubernetes-helm")
         WindowsSoftwareInstaller.install_with_choco("kind")
+
 
     def main():
         if not WindowsSoftwareInstaller.is_choco_installed():
