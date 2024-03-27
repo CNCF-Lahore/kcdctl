@@ -5,7 +5,8 @@ from KindHelmManager import KindHelmManager
 from LabConfigManager import LabConfigManager
 from LabManager import LabManager
 from determineOS import getOS
-from DependencyInsScripts.WindowsSetup import WindowsSoftwareInstaller
+from DependencyInsScripts.WindowsSetup import main as windows_setup_main
+
 
 def detOSandInsDep():
     osName, osDetails, osVersion, osFlavor = getOS()
@@ -16,13 +17,14 @@ def detOSandInsDep():
         print(f"The operating system flavor is: {osFlavor}")
     if 'windows' in osDetails.lower():
         print("Running Windows Installation scripts")
-        WindowsSoftwareInstaller.main()
+        windows_setup_main()  
     elif 'linux' in osDetails.lower():
         print("Running Linux Installation scripts")
         LinuxInstaller.main()
     elif 'darwin' in osDetails.lower():  # Check for macOS
         print("Running macOS Installation scripts")
         MacOSInstaller.main()
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Manage Kubernetes cluster deployment.')
