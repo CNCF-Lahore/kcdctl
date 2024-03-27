@@ -5,7 +5,7 @@ from KindHelmManager import KindHelmManager
 from LabConfigManager import LabConfigManager
 from LabManager import LabManager
 from determineOS import getOS
-from DependencyInsScripts.WindowsSetup import *
+from DependencyInsScripts.WindowsSetup import WindowsSoftwareInstaller
 
 def detOSandInsDep():
     osName, osDetails, osVersion, osFlavor = getOS()
