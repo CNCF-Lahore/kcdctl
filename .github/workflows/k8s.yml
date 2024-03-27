@@ -1,9 +1,12 @@
-name: Deploy Kubernetes Cluster lab01
+name: Deploy Kubernetes Cluster lab
 
 on:
   workflow_dispatch:
-    branches:
-      - github-action-to-run-kubernetes
+    inputs:
+      lab_number:
+        description: 'Lab Number (e.g., lab1, lab2, lab3)'
+        required: true
+        default: 'lab1' # Default value if none is provided
 
 jobs:
   deploy-on-ubuntu:
@@ -11,14 +14,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+      
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.x'    
-        
+          python-version: '3.x'
+
       - name: Deploy Kubernetes cluster
-        run: python kcdctl.py deploy lab1
+        run: python kcdctl.py deploy ${{ github.event.inputs.lab_number }}
+        env:
+          LAB_NUMBER: ${{ github.event.inputs.lab_number }}
       
       - name: Install kubectl
         run: |
@@ -26,8 +31,6 @@ jobs:
       
       - name: Get cluster info
         run: |
-          echo "Waiting for the cluster to be ready..."
-          sleep 120 # Wait for 120 seconds
           kubectl get nodes
           kubectl get namespace
           kubectl get pods
