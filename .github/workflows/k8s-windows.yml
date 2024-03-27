@@ -1,4 +1,4 @@
-name: Deploy Kubernetes Cluster lab(Linux)
+name: Deploy Kubernetes Cluster lab(Windows)
 
 on:
   workflow_dispatch:
