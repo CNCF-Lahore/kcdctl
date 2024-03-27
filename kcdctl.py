@@ -5,8 +5,7 @@ from KindHelmManager import KindHelmManager
 from LabConfigManager import LabConfigManager
 from LabManager import LabManager
 from determineOS import getOS
-from DependencyInsScripts.WindowsSetup import main as windows_setup_main
-
+from DependencyInsScripts.WindowsSetup import WindowsSoftwareInstaller
 
 def detOSandInsDep():
     osName, osDetails, osVersion, osFlavor = getOS()
@@ -17,7 +16,7 @@ def detOSandInsDep():
         print(f"The operating system flavor is: {osFlavor}")
     if 'windows' in osDetails.lower():
         print("Running Windows Installation scripts")
-        windows_setup_main()  
+        WindowsSoftwareInstaller.main()  
     elif 'linux' in osDetails.lower():
         print("Running Linux Installation scripts")
         LinuxInstaller.main()
