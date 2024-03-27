@@ -40,6 +40,9 @@ class WindowsSoftwareInstaller:
         # Optionally, check if Docker is running. This step is more complex and may require manual verification or a wait time.
         print("Please ensure Docker Desktop is running before proceeding with the installation of Helm and Kind.")
         print(f"Starting Docker")
+        subprocess.run(["ls", "C:\\Program Files"], check=True)
+        subprocess.run(["ls", "C:\\Program Files\\Docker"], check=True)
+        subprocess.run(["ls", "C:\\Program Files\\Docker\\Docker"], check=True)
         subprocess.run(["Start-Process", "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe"], check=True)
         subprocess.run(["Start-Service", "docker"], check=True)
         subprocess.run(["Get-Service", "docker"], check=True)
