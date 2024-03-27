@@ -1,0 +1,36 @@
+name: Deploy Kubernetes Cluster lab(Linux)
+
+on:
+  workflow_dispatch:
+    inputs:
+      lab_number:
+        description: 'Lab Number (e.g., lab1, lab2, lab3)'
+        required: true
+        default: 'lab1' # Default value if none is provided
+
+jobs:
+  deploy-on-ubuntu:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Deploy Kubernetes cluster
+        run: python kcdctl.py deploy ${{ github.event.inputs.lab_number }}
+        env:
+          LAB_NUMBER: ${{ github.event.inputs.lab_number }}
+      
+      - name: Install kubectl
+        run: |
+          sudo snap install kubectl --classic
+      
+      - name: Get cluster info
+        run: |
+          kubectl get nodes
+          kubectl get namespace
+          kubectl get pods
