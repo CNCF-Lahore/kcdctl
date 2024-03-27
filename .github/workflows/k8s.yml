@@ -2,9 +2,8 @@ name: Deploy Kubernetes Cluster lab01
 
 on:
   workflow_dispatch:
-    # Although branches under workflow_dispatch don't restrict manual triggers,
-    # it's good practice to specify intended branches for clarity.
-    # Users will select the branch when they run the workflow manually.
+    branches:
+      - github-action-to-run-kubernetes
 
 jobs:
   deploy-on-ubuntu:
@@ -12,10 +11,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          # Explicitly specifying the ref can ensure you're working with the right branch,
-          # but it's typically selected at runtime for workflow_dispatch. You might not need to set it here.
-          # ref: 'github-action-to-run-kubernetes'
 
       - name: Set up Python
         uses: actions/setup-python@v3
@@ -31,6 +26,8 @@ jobs:
       
       - name: Get cluster info
         run: |
+          echo "Waiting for the cluster to be ready..."
+          sleep 120 # Wait for 120 seconds
           kubectl get nodes
           kubectl get namespace
           kubectl get pods
