@@ -6,10 +6,10 @@ on:
       lab_number:
         description: 'Lab Number (e.g., lab1, lab2, lab3)'
         required: true
-        default: 'lab1' # Default value if none is provided
+        default: 'lab1'
 
 jobs:
-  deploy-on-ubuntu:
+  deploy-on-windows:
     runs-on: windows-latest
     steps:
       - name: Checkout code
@@ -20,15 +20,18 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install Chocolatey
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force;
+          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+          iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+      - name: Install kubectl using Chocolatey
+        run: choco install kubernetes-cli -y
+
       - name: Deploy Kubernetes cluster
         run: python kcdctl.py deploy ${{ github.event.inputs.lab_number }}
-        env:
-          LAB_NUMBER: ${{ github.event.inputs.lab_number }}
-      
-      - name: Install kubectl
-        run: |
-          sudo snap install kubectl --classic
-      
+
       - name: Get cluster info
         run: |
           kubectl get nodes
