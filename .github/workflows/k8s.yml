@@ -15,17 +15,12 @@ jobs:
           python-version: '3.x'    
     
       - name: Check system requirements
-        run: python kcdctl.py check
-      
-      - name: Create Kubernetes cluster
-        run: python kcdctl.py create deploy lab1
-      
-      - name: Install kubectl
         run: |
+          python3 kcdctl.py check
+          echo "Next"
+          python3 kcdctl.py deploy lab1
+          echo "Next"
           sudo snap install kubectl --classic
-      
-      - name: Get cluster info
-        run: |
           kubectl get nodes
           kubectl get namespace
           kubectl get pods
