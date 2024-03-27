@@ -1,0 +1,9 @@
+name: Deploy Kubernetes Cluster lab(Windows)
+
+on:
+  workflow_dispatch:
+    inputs:
+      lab_number:
+        description: 'Lab Number (e.g., lab1, lab2, lab3)'
+        required: true
+        default: 'lab1' # Default value if none is provided
