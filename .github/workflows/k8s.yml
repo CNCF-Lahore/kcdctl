@@ -13,12 +13,9 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: '3.x'    
-    
-      - name: Check system requirements
-        run: python kcdctl.py check
-      
-      - name: Create Kubernetes cluster
-        run: python kcdctl.py create deploy lab1
+        
+      - name: Deploy Kubernetes cluster
+        run: python kcdctl.py deploy lab1
       
       - name: Install kubectl
         run: |
