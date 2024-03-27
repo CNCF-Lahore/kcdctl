@@ -39,21 +39,28 @@ class WindowsSoftwareInstaller:
         WindowsSoftwareInstaller.install_with_choco("docker-desktop")
         # Optionally, check if Docker is running. This step is more complex and may require manual verification or a wait time.
         print("Please ensure Docker Desktop is running before proceeding with the installation of Helm and Kind.")
+        print(f"Starting Docker")
+        subprocess.run(["Start-Process", "C:\Program Files\Docker\Docker\Docker Desktop.exe"], check=True)
+        subprocess.run(["Start-Service", "docker"], check=True)
+        subprocess.run(["Get-Service", "docker"], check=True)
+        subprocess.run(["docker", "version"], check=True)
+
         time.sleep(60)  # Wait a bit for the user to start Docker Desktop; adjust the wait time as needed.
 
         # Install Helm and Kind after Docker Desktop
+
         WindowsSoftwareInstaller.install_with_choco("kubernetes-helm")
         WindowsSoftwareInstaller.install_with_choco("kind")
 
-def main():
-    if not WindowsSoftwareInstaller.is_choco_installed():
-        print("Chocolatey is not detected. Attempting to install Chocolatey...")
-        WindowsSoftwareInstaller.install_chocolatey()
+    def main():
         if not WindowsSoftwareInstaller.is_choco_installed():
-            print("Failed to install Chocolatey. Please install Chocolatey manually and retry.")
+            print("Chocolatey is not detected. Attempting to install Chocolatey...")
+            WindowsSoftwareInstaller.install_chocolatey()
+            if not WindowsSoftwareInstaller.is_choco_installed():
+                print("Failed to install Chocolatey. Please install Chocolatey manually and retry.")
             return
     
-    WindowsSoftwareInstaller.install_docker_and_dependencies()
+        WindowsSoftwareInstaller.install_docker_and_dependencies()
 
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        main()
