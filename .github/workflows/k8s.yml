@@ -1,0 +1,46 @@
+name: Deploy Kubernetes Cluster lab01
+
+on:
+  workflow_dispatch:
+    branches:
+      - github-action-to-run-kubernetes
+  push:
+    branches:
+      - github-action-to-run-kubernetes
+  pull_request:
+    branches:
+      - github-action-to-run-kubernetes
+
+jobs:
+  deploy-on-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "This workflow should not run on the main branch. Please run it on the github-action-to-run-kubernetes branch."
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'    
+        
+      - name: Deploy Kubernetes cluster
+        run: python kcdctl.py deploy lab1
+      
+      - name: Install kubectl
+        run: |
+          sudo snap install kubectl --classic
+      
+      - name: Get cluster info
+        run: |
+          echo "Waiting for the cluster to be ready..."
+          sleep 120 # Wait for 120 seconds
+          kubectl get nodes
+          kubectl get namespace
+          kubectl get pods
