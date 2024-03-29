@@ -14,5 +14,19 @@
             "namespace": "default",
             "values_file": "./Labs/Service Misconfiguration - Lab 2/lab2-helm/values.yaml"
         }
+    },
+    "lab3": {
+        "cluster_name": "lab1-cluster",
+        "config_path": "./Labs/SecurityLab/kind-config.yaml",
+        "uses_helm": true,
+        "helm_settings": {
+            "chart_name": "security-chart",
+            "release_name": "lab3",
+            "namespace": "security-ns"
+        }
+    },
+    "free-for-all": {
+        "cluster_name": "custom-lab-cluster",
+        "custom": true
     }
 }

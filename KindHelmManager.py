@@ -1,4 +1,6 @@
 import subprocess
+import tempfile
+import os
 
 class KindHelmManager:
     def __init__(self):
@@ -53,3 +55,28 @@ class KindHelmManager:
         if cluster_name not in self.helm_deployments:
             self.helm_deployments[cluster_name] = []
         self.helm_deployments[cluster_name].append((release_name, namespace))
+
+    def create_custom_cluster(self, cluster_name, control_plane_count, worker_count):
+        """Create a custom Kind cluster based on user-defined node counts."""
+        config_content = self._generate_kind_config(control_plane_count, worker_count)
+        
+        with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+            tmpfile.write(config_content.encode())
+            tmpfile_path = tmpfile.name
+        
+        try:
+            subprocess.run(["kind", "create", "cluster", "--name", cluster_name, "--config", tmpfile_path], check=True)
+            print(f"Successfully created custom cluster '{cluster_name}' with {control_plane_count} control-plane nodes and {worker_count} worker nodes.")
+        finally:
+            os.remove(tmpfile_path)
+
+    def _generate_kind_config(self, control_plane_count, worker_count):
+        """Generate a Kind configuration string with the specified number of control plane and worker nodes."""
+        nodes = ["- role: control-plane\n"] * int(control_plane_count)
+        nodes += ["- role: worker\n"] * int(worker_count)
+        config = f"""
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+{"".join(nodes)}"""
+        return config
