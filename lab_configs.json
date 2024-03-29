@@ -16,8 +16,8 @@
         }
     },
     "lab3": {
-        "cluster_name": "lab1-cluster",
-        "config_path": "./Labs/SecurityLab/kind-config.yaml",
+        "cluster_name": "lab3-cluster",
+        "config_path": "./Labs/",
         "uses_helm": true,
         "helm_settings": {
             "chart_name": "security-chart",
