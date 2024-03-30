@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: secured
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inaccessible-pod
+  namespace: {{ .Values.secureNamespace}}
+  labels:
+    app: inaccessible-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inaccessible-service
+  namespace: {{ .Values.secureNamespace}}
+spec:
+  selector:
+    app: inaccessible-pod
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: accessible-pod
+  namespace: {{ .Values.secureNamespace}}
+  labels:
+    app: accessible-pod
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: accessible-service
+  namespace: {{ .Values.secureNamespace}}
+spec:
+  selector:
+    app: accessible-pod
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

@@ -1,0 +1,15 @@
+# Default values for securitylab-chart.
+namespace: seclab
+secureNamespace: secured
+nginx:
+  image:
+    repository: nginx
+    tag: latest
+
+ingress:
+  enabled: true
+  tls:
+    secretName: tls-certs
+  hosts:
+    - host: foo.bar.com
+      paths: ["/"]

@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: seclab
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: {{ .Values.namespace }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pod-reader-binding
+subjects:
+  - kind: ServiceAccount
+    name: pod-reader-account
+    namespace: {{ .Values.namespace }}
+roleRef:
+  kind: ClusterRole
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: external-pod
+  namespace: {{ .Values.namespace}}
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    args:
+    - /bin/sh
+    - -c
+    - >
+        while true; do
+          if wget -q --timeout=5 http://accessible-service.secured.svc.cluster.local; then
+            echo "$(date) - accessible-service is reachable"
+          else
+            echo "$(date) - accessible-service is NOT reachable"
+          fi;
+          if wget -q --timeout=5 http://inaccessible-service.secured.svc.cluster.local; then
+            echo "$(date) - inaccessible-service is reachable"
+          else
+            echo "$(date) - inaccessible-service is NOT reachable"
+          fi;
+          sleep 10;
+        done
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readonly-pod
+  namespace: {{ .Values.namespace }}
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    securityContext:
+      readOnlyRootFilesystem: true
+    command: ["/bin/sh", "-c"]
+    args:
+      - touch /testfile; if [ $? -ne 0 ]; then echo 'Read-only file system test succeeded.'; else echo 'Read-only file system test failed.'; fi; sleep 3600
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rbac-test-pod
+  namespace: {{ .Values.namespace }}
+spec:
+  containers:
+  - name: kubectl-container
+    image: bitnami/kubectl
+    command: ["kubectl", "get", "pods"]
