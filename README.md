@@ -1,6 +1,6 @@
 ## How to Use
 
-Check System: To check if your system meets the requirements (Docker and Minikube installed), run the script with the check command:
+Check System: To check if your system meets the requirements (Docker, Helm, and Kind installed), run the script with the check command:
 ```
 
 python kcdctl.py
