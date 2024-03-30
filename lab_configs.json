@@ -16,13 +16,14 @@
         }
     },
     "lab3": {
-        "cluster_name": "lab1-cluster",
-        "config_path": "./Labs/SecurityLab/kind-config.yaml",
+        "cluster_name": "lab3-cluster",
+        "config_path": "./Labs/Security Lab - Lab 3/lab3-kindconf.yaml",
         "uses_helm": true,
         "helm_settings": {
-            "chart_name": "security-chart",
+            "chart_name": "./Labs/Security Lab - Lab 3/lab3-helm",
             "release_name": "lab3",
-            "namespace": "security-ns"
+            "namespace": "default",
+            "values_file": "./Labs/Security Lab - Lab 3/lab3-helm/values.yaml"
         }
     },
     "free-for-all": {
