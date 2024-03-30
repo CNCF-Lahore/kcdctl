@@ -9,4 +9,5 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: NodePort  # or LoadBalancer
+      nodePort: 30080  # Ensure this matches the kind configuration
+  type: NodePort
