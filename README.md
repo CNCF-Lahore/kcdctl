@@ -16,4 +16,4 @@ Available Commands:
 
 ## Try Lab using GitHub Action 
 
-Trigger the workflow from this branch ``github-action-to-run-kubernetes``
+Trigger the workflow from this branch ``ghactions-linux`` && ``ghactions-windows``
