@@ -16,4 +16,4 @@ Available Commands:
 
 ## Try Lab using GitHub Action 
 
-Trigger the workflow from this branch ``ghactions-linux`` && ``ghactions-windows``
+Trigger the workflow from this branch ``gh-action-linux`` && ``gh-actions-window``
