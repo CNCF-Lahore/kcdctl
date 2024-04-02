@@ -18,6 +18,6 @@ Available Commands:
 
 Trigger the workflow from this branch ``gh-action-linux`` && ``gh-actions-window``
 
-## Dislamair 
+## Disclaimer
 
 This repository is sole property of CNCF Lahore and contributors. Without permission, you cannot use it for production.
